@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #000000;
+}
+
+/* Class-based dark mode for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Primary color utility classes (bypass Tailwind arbitrary value limitations) */
+.bg-primary { background-color: var(--primary); }
+.text-primary { color: var(--primary); }
+.border-primary { border-color: var(--primary); }
+.border-t-primary { border-top-color: var(--primary); }
+.bg-primary-light { background-color: var(--primary-light); }
+.bg-primary-100 { background-color: var(--primary-100); }
+
+.hover\:border-primary:hover { border-color: var(--primary); }
+.focus\:ring-primary:focus { --tw-ring-color: var(--primary); }
+.focus\:border-primary:focus { border-color: var(--primary); }
+.group:hover .group-hover\:text-primary { color: var(--primary); }
+
+/* Base CSS variables – indigo default */
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --primary-100: #e0e7ff;
+  --primary-200: #c7d2fe;
+  --primary-dark: #3730a3;
+  --primary-darker: #1e1b4b;
+  --primary-ring: rgba(79, 70, 229, 0.3);
+}
+
+/* Color presets */
+:root[data-theme="emerald"] {
+  --primary: #10b981;
+  --primary-hover: #059669;
+  --primary-light: #ecfdf5;
+  --primary-100: #d1fae5;
+  --primary-200: #a7f3d0;
+  --primary-dark: #065f46;
+  --primary-darker: #022c22;
+  --primary-ring: rgba(16, 185, 129, 0.3);
+}
+
+:root[data-theme="rose"] {
+  --primary: #f43f5e;
+  --primary-hover: #e11d48;
+  --primary-light: #fff1f2;
+  --primary-100: #ffe4e6;
+  --primary-200: #fecdd3;
+  --primary-dark: #9f1239;
+  --primary-darker: #4c0519;
+  --primary-ring: rgba(244, 63, 94, 0.3);
+}
+
+:root[data-theme="amber"] {
+  --primary: #f59e0b;
+  --primary-hover: #d97706;
+  --primary-light: #fffbeb;
+  --primary-100: #fef3c7;
+  --primary-200: #fde68a;
+  --primary-dark: #92400e;
+  --primary-darker: #451a03;
+  --primary-ring: rgba(245, 158, 11, 0.3);
+}
+
+:root[data-theme="violet"] {
+  --primary: #8b5cf6;
+  --primary-hover: #7c3aed;
+  --primary-light: #f5f3ff;
+  --primary-100: #ede9fe;
+  --primary-200: #ddd6fe;
+  --primary-dark: #5b21b6;
+  --primary-darker: #2e1065;
+  --primary-ring: rgba(139, 92, 246, 0.3);
+}
+
+:root[data-theme="sky"] {
+  --primary: #0ea5e9;
+  --primary-hover: #0284c7;
+  --primary-light: #f0f9ff;
+  --primary-100: #e0f2fe;
+  --primary-200: #bae6fd;
+  --primary-dark: #075985;
+  --primary-darker: #082f49;
+  --primary-ring: rgba(14, 165, 233, 0.3);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(209 213 219);
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgb(75 85 99);
+}
+
+* {
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
