@@ -1,21 +1,26 @@
-MIT License
-
 Copyright (c) 2024 Barış İşgören
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Bu yazılımın tüm hakları saklıdır. Kaynak koda erişim yalnızca
+inceleme ve geri bildirim amaçlıdır.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Aşağıdaki koşullar geçerlidir:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+1. **Kullanım**: Bu yazılımı kendi projelerinizde kullanabilir,
+   değiştirebilir ve dağıtabilirsiniz.
+
+2. **Atıf (Credit) Zorunluluğu**: Bu yazılımı kullandığınız her
+   ortamda (web sitesi, uygulama, fork, vs.) aşağıdaki atıf
+   açıkça belirtilmelidir:
+   ```
+   "Barış İşgören tarafından geliştirilen UnThreaded projesine dayanmaktadır"
+   (https://github.com/barisisgoren/unthreaded)
+   ```
+   Atıf, kullanıcıların görebileceği bir yerde (örn. footer,
+   hakkında sayfası, README) yer almalıdır.
+
+3. **Ticari Kullanım**: Ticari kullanım dahildir ancak atıf
+   zorunluluğu devam eder.
+
+4. **Sorumluluk Reddi**: Bu yazılım "olduğu gibi" sağlanır,
+   hiçbir garanti vermez. Kullanımdan doğacak sorumluluk
+   kullanıcıya aittir.

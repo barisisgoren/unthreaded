@@ -50,4 +50,6 @@ Statik çıktı için `next.config.ts`'e `output: 'export'` ekleyin ve `npm run 
 
 ## Lisans
 
-MIT
+Telif Hakkı © 2024 Barış İşgören — Tüm hakları saklıdır.
+
+Bu yazılımı kullanmak, değiştirmek veya dağıtmak için **atıf (credit) vermeniz zorunludur**. Detaylı bilgi için [LICENSE](./LICENSE) dosyasına bakın.
