@@ -1,6 +1,7 @@
 # UnThreaded
 
 Threads takipçi verilerinizi analiz edin. %100 istemci tarafında çalışır, hiçbir veri sunucuya gönderilmez.
+Projenin aktif linki: https://unthreaded.vercel.app/
 
 ## Özellikler
 
