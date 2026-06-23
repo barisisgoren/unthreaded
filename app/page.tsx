@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { UserMinus, Heart, Users as UsersIcon, Trash2, TrendingUp, TrendingDown, BarChart3, GitCompare, HelpCircle, Settings as SettingsIcon } from 'lucide-react';
+import { UserMinus, Heart, Users as UsersIcon, BarChart3, GitCompare, HelpCircle, Settings as SettingsIcon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import FileUpload from './components/FileUpload';
@@ -11,21 +11,13 @@ import UserList from './components/UserList';
 import ThemeToggle from './components/ThemeToggle';
 import CompareSection from './components/CompareSection';
 import SettingsModal from './components/SettingsModal';
-import { AnalysisResult, DiffResult, ListMode } from './types';
-import { 
-  analyzeThreadsData, 
-  saveReport, 
-  getLatestReport, 
-  getReports,
-  calculateDiff,
-  clearReports 
-} from './lib/analyzer';
+import { AnalysisResult, ListMode } from './types';
+import { analyzeThreadsData } from './lib/analyzer';
 import { extractThreadsDataFromZip } from './lib/zipHandler';
 import { getSettings, applySettings } from './lib/settings';
 
 export default function Home() {
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
-  const [diffResult, setDiffResult] = useState<DiffResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
   const [activeTab, setActiveTab] = useState<ListMode>('unfollowers');
@@ -45,14 +37,6 @@ export default function Home() {
       const result = analyzeThreadsData(followersData, followingData);
       setAnalysisResult(result);
 
-      const previousReport = getLatestReport();
-      if (previousReport) {
-        const diff = calculateDiff(result, previousReport.result);
-        setDiffResult(diff);
-      }
-
-      saveReport(result);
-
       setTimeout(() => {
         const resultsElement = document.getElementById('results');
         if (resultsElement) {
@@ -66,26 +50,6 @@ export default function Home() {
       setAnalysisResult(null);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleClearHistory = () => {
-    if (confirm('Tüm geçmiş raporları silmek istediğinizden emin misiniz?')) {
-      clearReports();
-      setDiffResult(null);
-    }
-  };
-
-  const getNewUsersSet = (): Set<string> => {
-    if (!diffResult) return new Set();
-    
-    switch (activeTab) {
-      case 'unfollowers':
-        return new Set(diffResult.newUnfollowers.map(u => u.username));
-      case 'fans':
-        return new Set(diffResult.newFans.map(u => u.username));
-      default:
-        return new Set();
     }
   };
 
@@ -159,17 +123,6 @@ export default function Home() {
               transition={{ duration: 0.3 }}
             >
               <FileUpload onFileSelected={handleFileSelected} loading={loading} />
-              {pageTab === 'analysis' && analysisResult && getReports().length > 0 && (
-                <div className="flex justify-center mt-4">
-                  <button
-                    onClick={handleClearHistory}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                    Temizle
-                  </button>
-                </div>
-              )}
             </motion.section>
 
             <AnimatePresence>
@@ -195,63 +148,7 @@ export default function Home() {
                   transition={{ duration: 0.3 }}
                   className="space-y-6"
                 >
-                  {diffResult && (diffResult.followerChange !== 0 || diffResult.followingChange !== 0) && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5"
-                    >
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                        Önceki Analize Göre Değişim
-                      </h3>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {diffResult.followerChange !== 0 && (
-                          <div className={`flex items-center gap-2 p-3 rounded-lg ${diffResult.followerChange > 0 ? 'bg-green-50 dark:bg-green-950' : 'bg-red-50 dark:bg-red-950'}`}>
-                            {diffResult.followerChange > 0 ? <TrendingUp className="h-4 w-4 text-green-600" /> : <TrendingDown className="h-4 w-4 text-red-600" />}
-                            <div>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">Takipçi</p>
-                              <p className={`text-sm font-bold ${diffResult.followerChange > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                {diffResult.followerChange > 0 ? '+' : ''}{diffResult.followerChange}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                        {diffResult.newFollowers.length > 0 && (
-                          <div className="flex items-center gap-2 p-3 rounded-lg bg-green-50 dark:bg-green-950">
-                            <Heart className="h-4 w-4 text-green-600" />
-                            <div>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">Yeni Takipçi</p>
-                              <p className="text-sm font-bold text-green-600">+{diffResult.newFollowers.length}</p>
-                            </div>
-                          </div>
-                        )}
-                        {diffResult.lostFollowers.length > 0 && (
-                          <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 dark:bg-red-950">
-                            <UserMinus className="h-4 w-4 text-red-600" />
-                            <div>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">Ayrılan</p>
-                              <p className="text-sm font-bold text-red-600">-{diffResult.lostFollowers.length}</p>
-                            </div>
-                          </div>
-                        )}
-                        {diffResult.newUnfollowers.length > 0 && (
-                          <div className="flex items-center gap-2 p-3 rounded-lg bg-orange-50 dark:bg-orange-950">
-                            <UserMinus className="h-4 w-4 text-orange-600" />
-                            <div>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">Takipten Çıktı</p>
-                              <p className="text-sm font-bold text-orange-600">{diffResult.newUnfollowers.length}</p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </motion.div>
-                  )}
-
-                  <AnalysisDashboard 
-                    result={analysisResult} 
-                    diff={diffResult}
-                    history={getReports()}
-                  />
+                  <AnalysisDashboard result={analysisResult} />
 
                   <div className="flex items-center gap-2 p-1 rounded-xl bg-gray-100 dark:bg-gray-800">
                     {[
@@ -297,7 +194,6 @@ export default function Home() {
                           users={analysisResult.unfollowers}
                           title="Seni Takip Etmeyenler"
                           emptyMessage="Harika! Takip ettiğiniz herkes sizi takip ediyor 🎉"
-                          newUsers={getNewUsersSet()}
                           icon={<UserMinus className="h-5 w-5 text-white" />}
                         />
                       )}
@@ -306,7 +202,6 @@ export default function Home() {
                           users={analysisResult.fans}
                           title="Hayranlarınız"
                           emptyMessage="Henüz sadece sizi takip eden kimse yok"
-                          newUsers={getNewUsersSet()}
                           icon={<Heart className="h-5 w-5 text-white" />}
                         />
                       )}
